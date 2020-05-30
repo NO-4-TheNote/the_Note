@@ -1,7 +1,5 @@
 package com.group4.ui.controller;
 
-import com.group4.dao.ICatalogDao;
-import com.group4.dao.IKnowledgeBaseDao;
 import com.group4.domain.Catalog;
 import com.group4.domain.KnowledgeBase;
 import com.group4.domain.Note;
@@ -14,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +37,6 @@ public class MainController implements Initializable {
     private Note curNote;
 
     @FXML
-    private HTMLEditor content;
-    @FXML
     private Menu open;
     @FXML
     private WebView webView;
@@ -66,11 +61,6 @@ public class MainController implements Initializable {
 
     @Autowired
     private INoteService noteService;
-
-    @Autowired
-    private IKnowledgeBaseDao knowledgeBaseDao;
-    @Autowired
-    private ICatalogDao catalogDao;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
