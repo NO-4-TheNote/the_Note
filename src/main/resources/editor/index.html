@@ -1,0 +1,61 @@
+
+<html>
+<head>
+
+    <script language="JavaScript">
+        function changeBg() {
+            document.body.style.backgroundColor='yellow';
+        }
+    </script>
+
+
+    <meta charset="UTF-8">
+    <style type="text/css">
+        .toolbar {
+            border: 1px solid #ccc;
+        }
+        .text {
+            border: 1px solid #ccc;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div id="div1" class="toolbar">
+    </div>
+    <div id="div2" class="text" style="min-height: 920px"> <!--可使用 min-height 实现编辑区域自动增加高度-->
+        <p></p><!-- 这里的内容应该要写一个脚本，把数据库的内容放到这里 -->
+    </div>
+
+    <button id="btn1">获取html</button>
+    <button id="btn2">获取text</button>
+
+    <script type="text/javascript" src="wEditor/wangEditor.min.js"></script>
+    <script type="text/javascript">
+        var E = window.wangEditor
+        var editor = new E('#div1', '#div2')  // 两个参数也可以传入 elem 对象，class 选择器
+        editor.customConfig.uploadImgShowBase64 = true
+        editor.customConfig.showLinkImg = false
+        editor.create()
+        //var s='<p></p><p>哈哈哈</p>'
+        //editor.txt.html(s)
+
+        function getHtml() {
+            return editor.txt.html();
+        }
+        function setHtml(str) {
+            editor.txt.html(str);
+        }
+        function clear() {
+            editor.txt.clear();
+        }
+    </script>
+
+
+
+
+
+</body>
+</html>
+
+

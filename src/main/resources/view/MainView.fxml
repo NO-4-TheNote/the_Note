@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.*?>
+
+<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group4.ui.controller.MainController">
+    <children>
+        <MenuBar fx:id="homeMenu">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                  <Menu fx:id="open" mnemonicParsing="false" text="Open">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                     </items></Menu>
+                        <Menu mnemonicParsing="false" text="New">
+                            <items>
+                        <MenuItem mnemonicParsing="false" onAction="#newKnowledgeBaseAction" text="knowledge base" />
+                                <MenuItem mnemonicParsing="false" onAction="#newCatalogAction" text="catalog" />
+                                <MenuItem mnemonicParsing="false" onAction="#newNoteAction" text="note" />
+                            </items>
+                        </Menu>
+                        <MenuItem mnemonicParsing="false" onAction="#fileImport" text="Import" />
+                        <MenuItem mnemonicParsing="false" onAction="#fileExport" text="Export" />
+                    </items>
+
+                </Menu>
+            <Menu mnemonicParsing="false" text="Editor">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#editorSaveAction" text="Save" />
+                  <MenuItem mnemonicParsing="false" onAction="#editorClearAction" text="Clear" />
+              </items>
+            </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+      <VBox prefHeight="700.0" prefWidth="1150.0" VBox.vgrow="ALWAYS">
+         <children>
+              <HBox prefHeight="0.0" prefWidth="800.0">
+                  <children>
+                  <VBox prefHeight="23.0" prefWidth="200.0">
+                     <children>
+                            <Label nodeOrientation="LEFT_TO_RIGHT" prefHeight="23.0" prefWidth="204.0" text="    Catalog" wrapText="true" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="23.0" prefWidth="134.0">
+                     <children>
+                            <TextField fx:id="searchTextField" prefHeight="23.0" prefWidth="108.0" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="25.0" prefWidth="68.0">
+                     <children>
+                            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchButtonAction" prefHeight="23.0" prefWidth="66.0" text="Search" textAlignment="CENTER" textOverrun="CLIP" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="25.0" prefWidth="45.0">
+                     <children>
+                            <Label prefHeight="25.0" prefWidth="46.0" text=" Title：" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="25.0" prefWidth="353.0" HBox.hgrow="ALWAYS">
+                     <children>
+                            <TextField fx:id="title" prefHeight="25.0" prefWidth="368.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+                  </children>
+              </HBox>
+              <HBox prefHeight="600.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
+                  <children>
+                      <VBox prefWidth="200.0" spacing="2.0">
+                          <children>
+                              <ListView fx:id="catalogList" onMouseClicked="#catalogListClicked" VBox.vgrow="ALWAYS" />
+                          </children>
+                          <padding>
+                              <Insets top="2.0" />
+                          </padding>
+                      </VBox>
+                      <VBox prefHeight="200.0" prefWidth="200.0">
+                          <children>
+                              <ListView fx:id="noteList" onMouseClicked="#noteListClicked" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                          </children>
+                          <padding>
+                              <Insets top="2.0" />
+                          </padding>
+                  </VBox>
+                      <VBox prefHeight="200.0" prefWidth="100.0" spacing="2.0" HBox.hgrow="ALWAYS">
+                          <children>
+                              <WebView fx:id="webView" prefHeight="474.0" prefWidth="400.0" VBox.vgrow="ALWAYS" />
+                          </children>
+                          <padding>
+                              <Insets top="2.0" />
+                          </padding>
+                  </VBox>
+                  </children>
+              </HBox>
+         </children>
+      </VBox>
+    </children>
+</VBox>
