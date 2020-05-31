@@ -5,6 +5,7 @@ import com.group4.domain.KnowledgeBase;
 import java.util.List;
 
 public interface IKnowledgeBaseService {
+    void initTable();
     List<KnowledgeBase> findAllKnowledgeBase();
     KnowledgeBase findKnowledgeBaseByName(String name);
     KnowledgeBase findKnowledgeBaseById(Integer id);

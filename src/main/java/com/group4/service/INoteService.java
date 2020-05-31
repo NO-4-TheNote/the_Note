@@ -7,6 +7,7 @@ import javax.xml.catalog.Catalog;
 import java.util.List;
 
 public interface INoteService {
+    void initTable();
     List<Note> findAllNote(Catalog catalog);
     Note findNoteByName(String name);
     Note findNoteById(Integer id);

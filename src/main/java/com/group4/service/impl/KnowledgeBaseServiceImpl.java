@@ -16,6 +16,11 @@ public class KnowledgeBaseServiceImpl implements IKnowledgeBaseService {
     private IKnowledgeBaseDao knowledgeBaseDao;
 
     @Override
+    public void initTable() {
+        knowledgeBaseDao.initTable();
+    }
+
+    @Override
     public List<KnowledgeBase> findAllKnowledgeBase() {
         return knowledgeBaseDao.findAllKnowledgeBase();
     }

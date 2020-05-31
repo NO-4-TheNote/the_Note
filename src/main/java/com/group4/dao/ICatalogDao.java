@@ -10,6 +10,12 @@ import java.util.List;
 @Mapper
 public interface ICatalogDao {
     /**
+     * 建表
+     */
+    @Update("create table if not exists `catalog` (`id` int auto_increment PRIMARY KEY, `kid` int, `name` text )")
+    void initTable();
+
+    /**
      * 查询所有目录，并且获取每个目录下的所属的知识库信息
      * @return
      */

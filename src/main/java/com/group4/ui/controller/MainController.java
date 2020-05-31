@@ -26,13 +26,13 @@ import java.util.*;
 @Component
 public class MainController implements Initializable {
 
-    private Map<String,Integer> kBNameKBIdMap =new HashMap<String, Integer>();
+    private Map<String, Integer> kBNameKBIdMap = new HashMap<String, Integer>();
     private Integer curKBId;
     private KnowledgeBase curKB;
-    private Map<String,Integer> catalogNameCatalogIdMap=new HashMap<String, Integer>();
+    private Map<String, Integer> catalogNameCatalogIdMap = new HashMap<String, Integer>();
     private Integer curCatalogId;
     private Catalog curCatalog;
-    private Map<String,Integer> noteNameNoteIdMap=new HashMap<String,Integer>();
+    private Map<String, Integer> noteNameNoteIdMap = new HashMap<String, Integer>();
     private Integer curNoteId;
     private Note curNote;
 
@@ -64,7 +64,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        open.setOnShowing(evt->{
+        open.setOnShowing(evt -> {
             initOpenMenu();
         });
 
@@ -72,8 +72,19 @@ public class MainController implements Initializable {
         webEngine.load(mainUrl);
         webEngine.setJavaScriptEnabled(true);
 
+        initDatabase();
+
         initCatalogListMenu();
         initNoteListMenu();
+    }
+
+    /**
+     * 建表
+     */
+    void initDatabase() {
+        knowledgeBaseService.initTable();
+        catalogService.initTable();
+        noteService.initTable();
     }
 
 
@@ -81,22 +92,24 @@ public class MainController implements Initializable {
      * 在open菜单项显示可以
      * 打开的知识库
      */
-    public void initOpenMenu(){
-
-        List<MenuItem> kbsItems=new ArrayList<MenuItem>();
+    public void initOpenMenu() {
+        List<MenuItem> kbsItems = new ArrayList<MenuItem>();
         //业务层获取
-        List<KnowledgeBase> kbs=knowledgeBaseService.findAllKnowledgeBase();
+        List<KnowledgeBase> kbs = knowledgeBaseService.findAllKnowledgeBase();
         kBNameKBIdMap.clear();
-        for(int i=0;i<kbs.size();i++){
-            String name=kbs.get(i).getName();
-            MenuItem m=new MenuItem(name);
-            kBNameKBIdMap.put(name,kbs.get(i).getId());
+        for (int i = 0; i < kbs.size(); i++) {
+            String name = kbs.get(i).getName();
+            MenuItem m = new MenuItem(name);
+            kBNameKBIdMap.put(name, kbs.get(i).getId());
 
-            m.setOnAction((ActionEvent e)->{
-                curKBId= kBNameKBIdMap.get(m.getText());
+            m.setOnAction((ActionEvent e) -> {
+                curKBId = kBNameKBIdMap.get(m.getText());
                 loadKnowledgeBase();
             });
             kbsItems.add(m);
+        }
+        if (kbsItems.isEmpty()) {
+            kbsItems.add(new MenuItem("not found"));
         }
         open.getItems().setAll(kbsItems);
     }
@@ -104,27 +117,29 @@ public class MainController implements Initializable {
     /**
      * 加载知识库的前期工作
      */
-    public void loadKnowledgeBaseClear(){
-        curNote=null;
-        curNoteId=0;
-        curCatalog=null;
-        curNoteId=0;
+    public void loadKnowledgeBaseClear() {
+        curNote = null;
+        curNoteId = 0;
+        curCatalog = null;
+        curNoteId = 0;
         catalogList.getItems().setAll();//清空目录列表
         noteList.getItems().setAll();//清空笔记列表
         title.setText("");//清空标题
-        webEngine.executeScript("clear();");;//清空编辑器
+        webEngine.executeScript("clear();");
+        ;//清空编辑器
     }
+
     /**
      * 将当前的KnowledgeBase的目录加载到ui界面
      */
-    public void loadKnowledgeBase(){
+    public void loadKnowledgeBase() {
         loadKnowledgeBaseClear();
-        curKB=knowledgeBaseService.findKnowledgeBaseById(curKBId);
-        List<Catalog> catalogs=curKB.getCatalogList();
-        List<String> catalogsName=new ArrayList<String>();
+        curKB = knowledgeBaseService.findKnowledgeBaseById(curKBId);
+        List<Catalog> catalogs = curKB.getCatalogList();
+        List<String> catalogsName = new ArrayList<String>();
         catalogNameCatalogIdMap.clear();
         for (Catalog catalog : catalogs) {
-            catalogNameCatalogIdMap.put(catalog.getName(),catalog.getId());
+            catalogNameCatalogIdMap.put(catalog.getName(), catalog.getId());
             catalogsName.add(catalog.getName());
         }
         catalogList.getItems().setAll(catalogsName);
@@ -133,28 +148,30 @@ public class MainController implements Initializable {
     /**
      * 加载目录的前期工作
      */
-    public void loadCatalogClear(){
-        curNoteId=0;
-        curNote=null;
+    public void loadCatalogClear() {
+        curNoteId = 0;
+        curNote = null;
         title.setText("");//清空标题
-        webEngine.executeScript("clear();");;//清空编辑器
+        webEngine.executeScript("clear();");
+        ;//清空编辑器
     }
+
     /**
      * 将当前的catalog类加载到ui界面
      */
-    public void loadCatalog(){
-        try{
+    public void loadCatalog() {
+        try {
             loadCatalogClear();
-            curCatalog=catalogService.findCatalogById(curCatalogId);
-            List<Note> notes=curCatalog.getNotes();
-            List<String> notesName=new ArrayList<String>();
+            curCatalog = catalogService.findCatalogById(curCatalogId);
+            List<Note> notes = curCatalog.getNotes();
+            List<String> notesName = new ArrayList<String>();
             noteNameNoteIdMap.clear();
-            for (Note note: notes) {
-                noteNameNoteIdMap.put(note.getName(),note.getId());
+            for (Note note : notes) {
+                noteNameNoteIdMap.put(note.getName(), note.getId());
                 notesName.add(note.getName());
             }
             noteList.getItems().setAll(notesName);
-        }catch (Exception e){
+        } catch (Exception e) {
             return;
         }
     }
@@ -162,27 +179,30 @@ public class MainController implements Initializable {
     /**
      * 加载笔记的前期工作
      */
-    public void loadNoteClear(){
+    public void loadNoteClear() {
         title.setText("");//清空标题
-        webEngine.executeScript("clear();");;//清空编辑器
+        webEngine.executeScript("clear();");
+        ;//清空编辑器
     }
+
     /**
      * 将笔记加载到ui
      */
-    public void loadNote(){
+    public void loadNote() {
         loadNoteClear();
-        curNote=noteService.findNoteById(curNoteId);
+        curNote = noteService.findNoteById(curNoteId);
         title.setText(curNote.getTitle());
 
-        String content=curNote.getContent();
+        String content = curNote.getContent();
 
-        if(content!=null){
+        if (content != null) {
             webEngine.executeScript("setHtml('" + content + "');");
         }
     }
 
     /**
      * 目录点击将目录下的笔记加载到ui界面
+     *
      * @param mouseEvent
      */
     public void catalogListClicked(MouseEvent mouseEvent) {
@@ -190,28 +210,29 @@ public class MainController implements Initializable {
         //2.调用业务层直接根据id来获取list<note>
         //3.将list<note>转成list<string>
         //4.渲染list<string>
-        String selectCatalog=catalogList.getSelectionModel().getSelectedItem();
-        curCatalogId=catalogNameCatalogIdMap.get(selectCatalog);
+        String selectCatalog = catalogList.getSelectionModel().getSelectedItem();
+        curCatalogId = catalogNameCatalogIdMap.get(selectCatalog);
         loadCatalog();
     }
 
     /**
      * 笔记列表点击将笔记内容加载到编辑器里
+     *
      * @param mouseEvent
      */
     public void noteListClicked(MouseEvent mouseEvent) {
         //1.根据点击的String来获取id
         //2.调用业务层直接根据id来获取note
         //3.将note.content放入htmlEdit
-        try{
+        try {
 
-            String selectNote=noteList.getSelectionModel().getSelectedItem();
-            curNoteId=noteNameNoteIdMap.get(selectNote);
+            String selectNote = noteList.getSelectionModel().getSelectedItem();
+            curNoteId = noteNameNoteIdMap.get(selectNote);
             loadNote();
 
             //todo:将note.content放入htmlEdit
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return;
         }
     }
@@ -219,7 +240,7 @@ public class MainController implements Initializable {
     /**
      * 新建一个知识库
      */
-    public void newKnowledgeBaseAction(ActionEvent actionEvent){
+    public void newKnowledgeBaseAction(ActionEvent actionEvent) {
         String newKBName;
         //1.提供一个命名alert
         TextInputDialog dialog = new TextInputDialog("");
@@ -227,27 +248,28 @@ public class MainController implements Initializable {
         dialog.setHeaderText("");
         dialog.setContentText("Enter KnowLedgeBase Name:");
         Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()){
-            newKBName=result.get();
-            if(kBNameKBIdMap.containsKey(newKBName)){
+        if (result.isPresent()) {
+            newKBName = result.get();
+            if (kBNameKBIdMap.containsKey(newKBName)) {
                 // todo: show alert
-            }
-            else{
-                KnowledgeBase knowledgeBase=new KnowledgeBase(newKBName);
+            } else {
+                KnowledgeBase knowledgeBase = new KnowledgeBase(newKBName);
                 knowledgeBaseService.saveKnowledgeBase(knowledgeBase);
-                curKBId=knowledgeBase.getId();
-                curKB=knowledgeBaseService.findKnowledgeBaseById(curKBId);
+                curKBId = knowledgeBase.getId();
+                curKB = knowledgeBaseService.findKnowledgeBaseById(curKBId);
                 loadKnowledgeBase();
+                initOpenMenu();
             }
         }
     }
 
     /**
      * 新建一个目录
+     *
      * @param actionEvent
      */
     public void newCatalogAction(ActionEvent actionEvent) {
-        if(curKB==null)return;
+        if (curKB == null) return;
         String newCatalogName;
 
         //1.提供一个命名alert
@@ -256,14 +278,13 @@ public class MainController implements Initializable {
         dialog.setHeaderText("");
         dialog.setContentText("Enter Catalog Name:");
         Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()){
-            newCatalogName=result.get();
-            if(catalogNameCatalogIdMap.containsKey(newCatalogName)){
+        if (result.isPresent()) {
+            newCatalogName = result.get();
+            if (catalogNameCatalogIdMap.containsKey(newCatalogName)) {
                 System.out.println("有同名");
                 // todo: show alert
-            }
-            else{
-                Catalog catalog=new Catalog(curKBId,newCatalogName);
+            } else {
+                Catalog catalog = new Catalog(curKBId, newCatalogName);
                 catalogService.saveCatalog(catalog);
                 loadKnowledgeBase();
             }
@@ -282,10 +303,11 @@ public class MainController implements Initializable {
 
     /**
      * 新建一个笔记
+     *
      * @param actionEvent
      */
     public void newNoteAction(ActionEvent actionEvent) {
-        if(curCatalog==null)return;
+        if (curCatalog == null) return;
         String newNoteName;
 
         //1.提供一个命名alert
@@ -313,24 +335,25 @@ public class MainController implements Initializable {
 
     /**
      * 搜索按钮实现搜索功能
+     *
      * @param actionEvent
      */
-    public void searchButtonAction(ActionEvent actionEvent){
-        if(curCatalog==null)return;
+    public void searchButtonAction(ActionEvent actionEvent) {
+        if (curCatalog == null) return;
         try {
-            String target=searchTextField.getText();
-            int id=curCatalogId;
-            if(id==0)return;
-            curCatalog=catalogService.findCatalogById(curCatalogId);
-            List<Note> notes=curCatalog.getNotes();
-            List<String> notesName=new ArrayList<String>();
+            String target = searchTextField.getText();
+            int id = curCatalogId;
+            if (id == 0) return;
+            curCatalog = catalogService.findCatalogById(curCatalogId);
+            List<Note> notes = curCatalog.getNotes();
+            List<String> notesName = new ArrayList<String>();
 
-            for (Note note: notes) {
+            for (Note note : notes) {
                 notesName.add(note.getName());
             }
             List<String> matchNote = new ArrayList<String>();
-            for(String s:notesName){
-                if(s.indexOf(target, 0)!=-1){
+            for (String s : notesName) {
+                if (s.indexOf(target, 0) != -1) {
                     matchNote.add(s);
                 }
             }
@@ -349,13 +372,14 @@ public class MainController implements Initializable {
 
     /**
      * 保存编辑器的内容,更新笔记
+     *
      * @param actionEvent
      */
-    public void editorSaveAction(ActionEvent actionEvent){
-        if(curNote==null)return;
+    public void editorSaveAction(ActionEvent actionEvent) {
+        if (curNote == null) return;
         String newContent = (String) webEngine.executeScript("getHtml();");
         String newTitle = title.getText();
-        if(newContent!=curNote.getContent()||newTitle!=curNote.getTitle()){
+        if (newContent != curNote.getContent() || newTitle != curNote.getTitle()) {
             //当有一个出现不同，就更新
             curNote.setTitle(newTitle);
             curNote.setContent(newContent);
@@ -368,12 +392,13 @@ public class MainController implements Initializable {
     /**
      * 清空编辑器的内容
      */
-    public void editorClearAction(ActionEvent actionEvent){
+    public void editorClearAction(ActionEvent actionEvent) {
         webEngine.executeScript("clear();");
     }
 
     /**
      * 用于上下文菜单添加一个菜单项
+     *
      * @param menu
      * @param name
      * @param value
@@ -384,6 +409,7 @@ public class MainController implements Initializable {
         item.setOnAction(value);
         menu.getItems().add(item);
     }
+
     /**
      * 目录的上下文菜单
      */
@@ -417,8 +443,8 @@ public class MainController implements Initializable {
             if (catalog != null) {
                 // todo: show alert
                 catalogService.deleteCatalog(catalog);
-                curCatalog=null;
-                curCatalogId=0;
+                curCatalog = null;
+                curCatalogId = 0;
                 loadKnowledgeBase();
             }
         });
@@ -519,12 +545,12 @@ public class MainController implements Initializable {
             }
         });*/
         addMenuItem(contextMenu, "delete", event -> {
-            Note note=curNote;
+            Note note = curNote;
             if (curNote != null) {
                 // todo: show alert
                 noteService.deleteNote(note);
-                curNote=null;
-                curNoteId=0;
+                curNote = null;
+                curNoteId = 0;
                 loadCatalog();
             }
         });

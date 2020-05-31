@@ -16,6 +16,11 @@ public class NoteServiceImpl implements INoteService {
     private INoteDao noteDao;
 
     @Override
+    public void initTable() {
+        noteDao.initTable();
+    }
+
+    @Override
     public List<Note> findAllNote(Catalog catalog) {
         return null;
     }

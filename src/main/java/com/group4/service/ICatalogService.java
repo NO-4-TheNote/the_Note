@@ -7,6 +7,7 @@ import com.group4.domain.KnowledgeBase;
 import java.util.List;
 
 public interface ICatalogService {
+    void initTable();
     List<Catalog> findAllCatalog(KnowledgeBase knowledgeBase);
     Catalog findCatalogById(Integer id);
     Catalog findCatalogByName(String name);

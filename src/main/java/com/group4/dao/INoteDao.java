@@ -9,6 +9,11 @@ import java.util.List;
 
 @Mapper
 public interface INoteDao {
+    /**
+     * 建表
+     */
+    @Update("create table if not exists `note` (`id` int auto_increment PRIMARY KEY, `cid` int, `name` text, title text, content text )")
+    void initTable();
 
     /**
      * 查询所有

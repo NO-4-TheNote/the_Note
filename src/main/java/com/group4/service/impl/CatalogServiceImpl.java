@@ -19,6 +19,11 @@ public class CatalogServiceImpl implements ICatalogService {
     private ICatalogDao catalogDao;
 
     @Override
+    public void initTable() {
+        catalogDao.initTable();
+    }
+
+    @Override
     public List<Catalog> findAllCatalog(KnowledgeBase knowledgeBase) {
         return null;
     }
