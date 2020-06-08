@@ -12,7 +12,7 @@ public interface ICatalogDao {
     /**
      * 建表
      */
-    @Update("create table if not exists `catalog` (`id` int auto_increment PRIMARY KEY, `kid` int, `name` text )")
+    @Update("create table if not exists `catalog` (`id` int auto_increment PRIMARY KEY, `kid` int not null, `name` varchar(50), constraint belong_kb foreign key(kid) references knowledgeBase(id) on delete cascade)")
     void initTable();
 
     /**

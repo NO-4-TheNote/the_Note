@@ -13,7 +13,7 @@ public interface IKnowledgeBaseDao {
     /**
      * 建表
      */
-    @Update("create table if not exists `knowledgeBase` (`id` int auto_increment PRIMARY KEY, `name` text )")
+    @Update("create table if not exists `knowledgeBase` (`id` int auto_increment PRIMARY KEY, `name` varchar(50) )")
     void initTable();
 
     /**

@@ -12,7 +12,7 @@ public interface INoteDao {
     /**
      * 建表
      */
-    @Update("create table if not exists `note` (`id` int auto_increment PRIMARY KEY, `cid` int, `name` text, title text, content text )")
+    @Update("create table if not exists `note` (`id` int auto_increment PRIMARY KEY, `cid` int not null, `name` varchar(50), title text, content longtext, constraint belong_catalog foreign key(cid) references catalog(id) on delete cascade)")
     void initTable();
 
     /**
